@@ -11,10 +11,33 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+	String connStr = "";
+	String ip = "";
+	int port = 1521;
+	String sid = "";
+	String usr = "";
+	String pwd = "";
+
+
+	if (args.length == 5) {
+	    //Debug only
+        Arrays.stream(args).forEach(System.out::println);
+        port = Integer.parseInt(args[3]);
+    }
+    else {
+        showUsage();
+        System.exit(1);
     }
 
-    public void showOptions() {
+    }
+
+
+    private static void showUsage(){
+        System.out.println("Positional command-line argument(for sake of code semplicity):");
+        System.out.println("username password ip port query");
+    }
+
+    private static void interactivePrompt() {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String opt = null;
@@ -29,11 +52,7 @@ public class Main {
         try {
             while ((opt = br.readLine()) != null && !opt.equalsIgnoreCase("q"))
             {
-                System.out.println("\n"
-                        + "|###########################################");
-                //System.out.println("|Object class: "+this.obj.getClass());
-                System.out.println("|[+]Type a SQL query or type q to quit:\n"
-                        + "|Methods - show alla methods;");
+                System.out.println("|[+]Type a SQL query or type q to quit:");
                 System.out.print(">");
 
                 // Connection to DB

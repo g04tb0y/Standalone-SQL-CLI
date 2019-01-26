@@ -4,7 +4,7 @@ that should help pentester to access to database when sql client, such as sqlplu
 The general idea is to keep the code as simple as possible so it can be deployed easily on the target machine, even through a webshell.
 
 ## Usage
-There is a stand alone .java file for each of the common DBMS such Oracle, MySQL e so on (soon).
+There is a stand alone .java file for each of the common DBMS such Oracle, MySQL and so on.
 Compile with javac:
 ```bash
 javac *.java

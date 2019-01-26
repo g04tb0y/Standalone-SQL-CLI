@@ -3,9 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.Properties;
+import java.sql.*;
+import java.util.logging.Logger;
 
 
 public class Main {
@@ -19,10 +23,11 @@ public class Main {
 	String pwd = "";
 
 
-	if (args.length == 5) {
+	if (args.length == 6) {
 	    //Debug only
         Arrays.stream(args).forEach(System.out::println);
         port = Integer.parseInt(args[3]);
+        File file = new File(args[4]);
     }
     else {
         showUsage();
@@ -33,8 +38,8 @@ public class Main {
 
 
     private static void showUsage(){
-        System.out.println("Positional command-line argument(for sake of code semplicity):");
-        System.out.println("username password ip port query");
+        System.out.println("Positional command-line argument(for sake of code simplicity):");
+        System.out.println("username password ip port jdbcdriver query");
     }
 
     private static void interactivePrompt() {
@@ -75,24 +80,73 @@ public class Main {
     }
 
 
+    public void connect(String jdbcpath) {
+
+        try {
+            URL u = new URL("jar:file://" + jdbcpath+ "!/";
+            URLClassLoader ucl = new URLClassLoader(new URL[] { u });
+            String classname = ucl.getClass().getName();
+            System.out.println("Driver class name: ");//debug
+            Driver d = null;
+            d = (Driver)Class.forName(classname, true, ucl).newInstance();
+            DriverManager.registerDriver(new DriverShim(d));
+            DriverManager.getConnection("jdbc:postgresql:" + database, user, password);
+        } catch (InstantiationException |
+                SQLException |
+                IllegalAccessException |
+                ClassNotFoundException |
+                MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        // Success!
+    }
+
+
+
+    class DriverShim implements Driver {
+        private Driver driver;
+        DriverShim(Driver d) {
+            this.driver = d;
+        }
+        public boolean acceptsURL(String u) throws SQLException {
+            return this.driver.acceptsURL(u);
+        }
+        public Connection connect(String u, Properties p) throws SQLException {
+            return this.driver.connect(u, p);
+        }
+        public int getMajorVersion() {
+            return this.driver.getMajorVersion();
+        }
+        public int getMinorVersion() {
+            return this.driver.getMinorVersion();
+        }
+        public DriverPropertyInfo[] getPropertyInfo(String u, Properties p) throws SQLException {
+            return this.driver.getPropertyInfo(u, p);
+        }
+        public boolean jdbcCompliant() {
+            return this.driver.jdbcCompliant();
+        }
+
+        @Override
+        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+            return null;
+        }
+    }
 
     /*
      * Load a JDBC driver jar into the class path. Remember that adding untrusted JAR
      * could lead the program to execute malicious code.
      */
-    public static synchronized void loadJDBC(File fjar) {
+    public static synchronized void connect(Url u) {
 
         if (fjar.length() != 0){
 
             try {
-                URLClassLoader loader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-                URL url = fjar.toURI().toURL();
 
-                for (java.net.URL it : Arrays.asList(loader.getURLs())){ //check if it's already loaded
-                    if (it.equals(url)){
-                        return;
-                    }
-                }
+                URLClassLoader ucl = new URLClassLoader(new URL[] { u });
+
+
                 Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{java.net.URL.class});
                 method.setAccessible(true);
                 method.invoke(loader, new Object[]{url});
@@ -109,4 +163,5 @@ public class Main {
             System.out.println("[ERROR] Invalid JAR file!");
         }
     }
+
 }

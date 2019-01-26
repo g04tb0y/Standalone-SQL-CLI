@@ -1,9 +1,6 @@
 import java.util.Arrays;
 import java.sql.*;
-/*
-LD preload while using oci8
-LD_LIBRARY_PATH="/usr/lib/oracle/11.2/client64/lib:/usr/lib64"
- */
+
 
 public class Orcl {
 

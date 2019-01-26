@@ -54,7 +54,7 @@ public class Mssql {
 
     private static void showUsage(){
         System.out.println("Positional command-line argument(for sake of code simplicity):");
-        System.out.println("java -cp .:/full/path/jdbc.jar Mysql <host> <port> <username> <password> <query>");
+        System.out.println("java -cp .:/full/path/jdbc.jar Mssql <host> <port> <username> <password> <query>");
     }
 
 }

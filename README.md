@@ -6,12 +6,12 @@ The general idea is to keep the code as simple as possible so it can be deployed
 ## Usage
 There is a stand alone .java file for each of the common DBMS such Oracle, MySQL e so on.
 Compile with javac:
-```java
+```bash
 javac *.java
 ```
 
 The execute preloading the JDBC driver into the Class Path:
-```java
+```bash
 java -cp .:/full/path/DBDrivers/ojdbc6.jar Orcl 192.168.138.132 1521 system oracle "select * from dba_users"
 
 ```

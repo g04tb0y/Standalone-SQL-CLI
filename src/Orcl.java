@@ -8,8 +8,8 @@ public class Orcl {
 
             if (args.length == 5) {
                 System.out.println("Echo params: ");
-                for(int i = 0; i < args.length;i++){
-                    System.out.println(args[i]);
+                for (String arg : args) {
+                    System.out.println(arg);
                 }
 
                 Class.forName("oracle.jdbc.driver.OracleDriver");

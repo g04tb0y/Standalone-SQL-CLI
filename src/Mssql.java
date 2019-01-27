@@ -8,7 +8,9 @@ public class Mssql {
 
         if (args.length == 5) {
             System.out.println("Echo params: ");
-            Arrays.stream(args).forEach(System.out::println);
+            for (String arg : args) {
+                System.out.println(arg);
+            }
 
             try {
                 String connectionString =

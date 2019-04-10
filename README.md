@@ -12,10 +12,10 @@ javac *.java
 
 The execute preloading the JDBC driver into the Class Path:
 ```bash
-java -cp .:/full/path/DBDrivers/ojdbc6.jar Orcl 192.168.138.132 1521 system oracle "select * from dba_users"
+java -cp :/full/path/DBDrivers/ojdbc6.jar Orcl 192.168.138.132 1521 system oracle "select * from dba_users"
 
 ```
-
+Separate multiple classpath with ```:```
 ### Oracle oci driver
 
 LD preload when using the oci8

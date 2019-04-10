@@ -5,14 +5,14 @@ public class Orcl {
 
         public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-            if (args.length == 5) {
+            if (args.length == 6) {
                 System.out.println("Echo params: ");
                 for (String arg : args) {
                     System.out.println(arg);
                 }
 
                 Class.forName("oracle.jdbc.driver.OracleDriver");
-                String connectionString = "jdbc:oracle:thin:@//" + args[0] + ":" + args[1];
+                String connectionString = "jdbc:oracle:thin:@//" + args[0] + ":" + args[1]+"/"+args[5];
 
                 //Get connection using driver manager
                 Connection connection = DriverManager.getConnection(connectionString, args[2], args[3]);
@@ -47,7 +47,7 @@ public class Orcl {
 
     private static void showUsage(){
         System.out.println("Positional command-line argument(for sake of code simplicity):");
-        System.out.println("java -cp .:/full/path/jdbc.jar Orcl <host> <port> <username> <password> <query>");
+        System.out.println("java -cp .:/full/path/jdbc.jar Orcl <host> <port> <username> <password> <query> <SID>");
     }
 
 }
